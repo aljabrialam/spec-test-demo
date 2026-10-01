@@ -1030,6 +1030,8 @@
   .rail-qr:hover { border-color: var(--blue); }
   .rail-auto-demo { display:block; margin:8px auto 0; width:132px; padding:7px 0; font-family:var(--mono); font-size:10.5px; letter-spacing:.4px; background:var(--ink); color:var(--panel); border:none; border-radius:var(--radius); cursor:pointer; }
   .rail-auto-demo:hover { opacity:.85; }
+  .rail-about { display:block; margin:6px auto 0; width:132px; padding:7px 0; font-family:var(--mono); font-size:10.5px; letter-spacing:.4px; background:none; color:var(--ink); border:1px solid var(--line); border-radius:var(--radius); cursor:pointer; }
+  .rail-about:hover { border-color: var(--ink); }
 </style>
 </head>
 <body>
@@ -2560,7 +2562,8 @@
       return '<button class="rail-stage' + (s.id === on ? ' active' : '') + '" type="button" data-stage="' + s.id + '" data-act="stage" data-id="' + s.id + '"' + (s.id === on ? ' aria-current="page"' : '') + '><span class="stage-idx" aria-hidden="true">' + s.n + '</span><span><span class="stage-name">' + s.name + '</span><br><span class="stage-sub">' + s.sub + '</span></span></button>';
     }).join('') +
       '<a class="rail-qr" href="https://aljabrialam.github.io/spec-test-demo/" target="_blank" rel="noreferrer" aria-label="QR code — open the live demo"><img src="data:image/svg+xml;base64,' + QR_SVG_B64 + '" alt="" width="120" height="120"><span>Scan for live demo</span></a>' +
-      '<button class="rail-auto-demo" type="button" data-act="autoDemo">▶ Auto demo</button>';
+      '<button class="rail-auto-demo" type="button" data-act="autoDemo">▶ Auto demo</button>' +
+      '<button class="rail-about" type="button" data-act="aboutMe">About me</button>';
     $('acctName').textContent = session.user;
     $('acctRole').textContent = (PROJECTS[ctx.pid] && roleIn() ? roleIn() : 'no role') + (PROJECTS[ctx.pid] ? ' · ' + PROJECTS[ctx.pid].name : '');
     var m = $('acctMenu');
@@ -2823,6 +2826,7 @@
   function tourWaitRun(){ return new Promise(function(res){ (function poll(){ if (!runInProgress || !tour.active) return res(); setTimeout(poll, 300); })(); }); }
   ACT.dTourStop = function(){ tour.active = false; tourHide(); toast('Guided demo stopped. The state on screen is kept.', 'warn'); };
   ACT.autoDemo = function(){ if ($('rail').classList.contains('open')) toggleRail(false); ACT.dTour(); };
+  ACT.aboutMe = function(){ dialog({ title: 'About me', body: '<p style=\"font-weight:600;margin:0 0 4px;\">Aljabri Alam — Technical Architect &amp; AI Advocate (Singapore)</p>' + '<p style=\"margin:0 0 12px;\">Aljabri is a Technical Architect and AI advocate based in Singapore. He champions spec-driven development and AI-assisted engineering — helping teams use modern AI tooling to design, validate, and ship software faster.</p>' + '<p style=\"margin:0;font-family:var(--mono);font-size:12px;\"><a href=\"https://www.linkedin.com/in/aljabri-alam\" target=\"_blank\" rel=\"noreferrer\">LinkedIn ↗</a> &nbsp;·&nbsp; <a href=\"https://github.com/aljabrialam\" target=\"_blank\" rel=\"noreferrer\">GitHub ↗</a></p>', buttons: [{ label: 'Close', kind: 'ghost', value: false }] }); };
 
   ACT.dTour = async function(){
     if (!tourBegin()) return;
