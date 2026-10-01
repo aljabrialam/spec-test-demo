@@ -1028,6 +1028,8 @@
   .rail-qr img { display:block; width:120px; height:120px; margin:0 auto; }
   .rail-qr span { display:block; margin-top:4px; font-family:var(--mono); font-size:9.5px; letter-spacing:.4px; color:#1b1f2a; }
   .rail-qr:hover { border-color: var(--blue); }
+  .rail-auto-demo { display:block; margin:8px auto 0; width:132px; padding:7px 0; font-family:var(--mono); font-size:10.5px; letter-spacing:.4px; background:var(--ink); color:var(--panel); border:none; border-radius:var(--radius); cursor:pointer; }
+  .rail-auto-demo:hover { opacity:.85; }
 </style>
 </head>
 <body>
@@ -2557,7 +2559,8 @@
     $('railStages').innerHTML = STAGES.map(function(s){
       return '<button class="rail-stage' + (s.id === on ? ' active' : '') + '" type="button" data-stage="' + s.id + '" data-act="stage" data-id="' + s.id + '"' + (s.id === on ? ' aria-current="page"' : '') + '><span class="stage-idx" aria-hidden="true">' + s.n + '</span><span><span class="stage-name">' + s.name + '</span><br><span class="stage-sub">' + s.sub + '</span></span></button>';
     }).join('') +
-      '<a class="rail-qr" href="https://aljabrialam.github.io/spec-test-demo/" target="_blank" rel="noreferrer" aria-label="QR code — open the live demo"><img src="data:image/svg+xml;base64,' + QR_SVG_B64 + '" alt="" width="120" height="120"><span>Scan for live demo</span></a>';
+      '<a class="rail-qr" href="https://aljabrialam.github.io/spec-test-demo/" target="_blank" rel="noreferrer" aria-label="QR code — open the live demo"><img src="data:image/svg+xml;base64,' + QR_SVG_B64 + '" alt="" width="120" height="120"><span>Scan for live demo</span></a>' +
+      '<button class="rail-auto-demo" type="button" data-act="autoDemo">▶ Auto demo</button>';
     $('acctName').textContent = session.user;
     $('acctRole').textContent = (PROJECTS[ctx.pid] && roleIn() ? roleIn() : 'no role') + (PROJECTS[ctx.pid] ? ' · ' + PROJECTS[ctx.pid].name : '');
     var m = $('acctMenu');
@@ -2819,6 +2822,7 @@
   }
   function tourWaitRun(){ return new Promise(function(res){ (function poll(){ if (!runInProgress || !tour.active) return res(); setTimeout(poll, 300); })(); }); }
   ACT.dTourStop = function(){ tour.active = false; tourHide(); toast('Guided demo stopped. The state on screen is kept.', 'warn'); };
+  ACT.autoDemo = function(){ if ($('rail').classList.contains('open')) toggleRail(false); ACT.dTour(); };
 
   ACT.dTour = async function(){
     if (!tourBegin()) return;
